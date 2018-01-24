@@ -8,6 +8,9 @@ from dateutil import parser
 
 
 class Wrapper:
+    """
+    Simple wrapper for openligadb Api.
+    """
     def __init__(self):
         self.url = 'https://www.openligadb.de/api'
         self.matches = self.get_match_data_by_league_season()
@@ -16,16 +19,23 @@ class Wrapper:
         self.teams = self.get_data()
 
     def get_data(self):
+        """
+        return all teams participating in current league season
+        """
         data = json.load(urllib2.urlopen(self.url + '/getavailableteams/bl1/2017'))
         return [r for r in data]
 
     def get_match_data_by_league_season(self):
         """
+        return all matche/games for current league season
         """
         data = json.load(urllib2.urlopen(self.url + '/getmatchdata/bl1/2017'))
         return [md for md in data]
 
     def process_table_stats(self):
+        """
+        calculating required point and return season current ranking.
+        """
         self.stats = self.championship_status()[0]
         results = {}
 
@@ -43,6 +53,9 @@ class Wrapper:
         return results
 
     def championship_status(self):
+        """
+        return all stats for teams in the league.
+        """
         teams = self.get_data()
         chart = {}
         for team in teams:
@@ -92,6 +105,9 @@ class Wrapper:
                       reverse=True), to_be_played, teams
 
     def next_weekend(self):
+        """
+        return next weekend match/games.
+        """
         today = datetime.date.today()
         sat = today + datetime.timedelta((5 - today.weekday()) % 7)
         sun = today + datetime.timedelta((6 - today.weekday()) % 7)
@@ -107,6 +123,9 @@ class Wrapper:
         return next_matches
 
     def all_matches(self):
+        """
+        return list of all matches for current league season
+        """
         all_matches = {}
         n = 0
         for m in self.matches:
@@ -118,6 +137,9 @@ class Wrapper:
                       key=lambda k: k['date'], reverse=False)
 
     def search_team(self, team):
+        """
+        search for team, and return name with id
+        """
         t = [i for i in self.get_data()]
         results = []
         for i in t:
@@ -129,6 +151,9 @@ class Wrapper:
         return results
 
     def get_team_matches(self, tid):
+        """
+        find all games for the team we searched
+        """
         team_info = {}
         n = 0
         for i in self.all_matches():
@@ -139,4 +164,7 @@ class Wrapper:
         return team_info
 
     def get_team_stats(self, name):
+        """
+        return team current position and stats in the ranking table.
+        """
         return [ts for ts in self.stats if ts['team_name'].lower() == name][0]

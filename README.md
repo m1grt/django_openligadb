@@ -51,5 +51,4 @@ Nothing to say about how to use it :)
 
 ## Release History
 
-## Development setup
 * Version 1
