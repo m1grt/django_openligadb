@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1>Bundesliga</h1>
+    <a href="{% url 'search' %}">search</a>
+    <a href="{% url 'follow' %}">follow</a>
+    <a href="{% url 'bundesliga' %}">bundesliga</a>
+    <a href="{% url 'allmatches' %}">allmatches</a>
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+    <hr>
+    {% endblock %}
+</body>
+</html>

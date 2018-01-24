@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+{% block title %}Stats{% endblock %}
+{% block content %}
+<br><br>
+{{ table_team.team_name }} - points: {{ table_team.points }}<br><br>
+Matches in the league:<br><br>
+{% for row in table_id %}
+{% if row.status == True %}
+{{ row.match }} {{ row.date }} - Finished <br>
+{% elif row.status == False %}
+{{ row.match }} {{ row.date }} - To be played <br>
+{% endif %}
+{% endfor %}
+<br><br>
+<a href="{% url 'home' %}">back</a>
+{% endblock %}

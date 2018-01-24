@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block title %}Bundesliga stats{% endblock %}
+{% block content %}
+<br><br>
+{% for row in table %}
+    {{ row.position }} {{ row.team_name }} {{ row.wins }} {{ row.losses }} {{ row.draws }} {{ row.points }}<br>
+{% endfor %}
+<br><br>
+    <a href="{% url 'home' %}">back</a>
+<br><br>
+{% endblock %}
