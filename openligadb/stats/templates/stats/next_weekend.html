@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block title %}Next Matches{% endblock %}
+{% block content %}
+    <br><br>
+    Next weekend<br><br>
+    {% for row in table %}
+        {{ row.date }} {{ row.teams }}<br>
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'index' %}">back</a>
+    <br><br>
+{% endblock %}

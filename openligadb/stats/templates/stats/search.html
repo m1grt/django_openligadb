@@ -1,25 +1,25 @@
 {% extends "index.html" %}
 {% block title %}Search{% endblock %}
 {% block content %}
-<br><br>
-<form action="{% url 'search' %}" method="post">
-    {% csrf_token %}
-    <label for="team_name">Enter Team name: </label>
-    <input id="team_name" type="text" name="team_name" value="">
-    <input type="submit" value="Search">
-</form>
-
-
-{% for row in table %}
-<br>
-    <form action="{% url 'stats' %}" method="post">
+    <br><br>
+    <form action="{% url 'search' %}" method="post">
         {% csrf_token %}
-        <input id="name" type="hidden" name="name" value="{{ row.name }}">
-        <input id="tid" type="hidden" name="tid" value="{{ row.id }}">
-        <input type="submit" value="{{ row.name }}">
+        <label for="team_name">Enter Team name: </label>
+        <input id="team_name" type="text" name="team_name" value="">
+        <input type="submit" value="Search">
     </form>
-{% endfor %}
-<br><br>
-    <a href="{% url 'home' %}">back</a>
-<br><br>
+
+
+    {% for row in table %}
+        <br>
+        <form action="{% url 'team_stats' %}" method="post">
+            {% csrf_token %}
+            <input id="name" type="hidden" name="name" value="{{ row.name }}">
+            <input id="tid" type="hidden" name="tid" value="{{ row.id }}">
+            <input type="submit" value="{{ row.name }}">
+        </form>
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'index' %}">back</a>
+    <br><br>
 {% endblock %}

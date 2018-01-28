@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 
-from . import views
+from views import IndexView, LeagueView, ListAllView, SearchView, NextWeekendView, TeamStatsView
 
 urlpatterns = [
-    url(r'^$', views.index, name='home'),
-    url(r'^bundesliga/', views.bundesliga, name='bundesliga'),
-    url(r'^search/', views.search, name='search'),
-    url(r'^follow/', views.follow, name='follow'),
-    url(r'^allmatches/', views.all_matches, name='allmatches'),
-    url(r'^team_stats/', views.team_stats, name='stats'),
+    url(r'^$', IndexView.as_view(), name='index'),
+    url(r'^league/', LeagueView.as_view(), name='league'),
+    url(r'^search/', SearchView.as_view(), name='search'),
+    url(r'^next_weekend/', NextWeekendView.as_view(), name='next_weekend'),
+    url(r'^list_all/', ListAllView.as_view(), name='list_all'),
+    url(r'^team_stats/', TeamStatsView.as_view(), name='team_stats'),
 ]

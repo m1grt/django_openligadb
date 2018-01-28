@@ -11,7 +11,8 @@ class Wrapper:
     """
     Simple wrapper for openligadb Api.
     """
-    def __init__(self):
+    def __init__(self, *args):
+        self.args = args
         self.url = 'https://www.openligadb.de/api'
         self.matches = self.get_match_data_by_league_season()
         self.stats = self.championship_status()[0]
@@ -62,10 +63,8 @@ class Wrapper:
             chart[team['TeamId']] = {'team_name': team['TeamName'], 'points': 0, 'wins': 0, 'losses': 0, 'draws': 0,
                                      'goals': 0, 'received_goals': 0}
 
-        match_data = self.get_match_data_by_league_season()
-
         to_be_played = []
-        for m in match_data:
+        for m in self.matches:
             if not m['MatchIsFinished']:
                 to_be_played.append(m['MatchID'])
                 continue
@@ -168,3 +167,7 @@ class Wrapper:
         return team current position and stats in the ranking table.
         """
         return [ts for ts in self.stats if ts['team_name'].lower() == name][0]
+
+
+STATS = Wrapper().championship_status()
+print STATS[0]

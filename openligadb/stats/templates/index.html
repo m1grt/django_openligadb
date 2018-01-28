@@ -1,18 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
-    <title>{% block title %}{% endblock %}</title>
+    <title>1st bundesliga</title>
 </head>
 <body>
     <h1>Bundesliga</h1>
-    <a href="{% url 'search' %}">search</a>
-    <a href="{% url 'follow' %}">follow</a>
-    <a href="{% url 'bundesliga' %}">bundesliga</a>
-    <a href="{% url 'allmatches' %}">allmatches</a>
+        <a href="{% url 'search' %}">Search</a>
+        <a href="{% url 'next_weekend' %}">Next weekend</a>
+        <a href="{% url 'league' %}">League</a>
+        <a href="{% url 'list_all' %}">List all matches</a>
     {% block content %}{% endblock %}
-
     {% block footer %}
-    <hr>
+        <hr>
     {% endblock %}
 </body>
 </html>

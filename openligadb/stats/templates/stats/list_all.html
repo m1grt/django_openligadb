@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block title %}all matches in the liga{% endblock %}
+{% block content %}
+    <br><br>
+    {% for row in table %}
+        {{ row.match }} {{ row.date }} {{ row.status }}<br>
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'index' %}">back</a>
+    <br><br>
+{% endblock %}

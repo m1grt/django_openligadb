@@ -1,67 +1,88 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.shortcuts import render
-from .results import openliga_wrapper
+from django.http import HttpResponse
+from django.views.generic import TemplateView, View
 
-wrapper = openliga_wrapper.Wrapper()
-
-
-def index(request):
-    return render(request, 'index.html')
+from results import SEASON_MATCHES, SEASON_TEAMS, helpers
 
 
-def bundesliga(request):
-    t = wrapper.process_table_stats()
-    table = [i for i in t.values()]
-    context = {'table': table}
-    return render(request, 'stats/bundesliga.html', context)
+class IndexView(TemplateView):
+    template_name = "index.html"
 
 
-def follow(request):
-    t = wrapper.next_weekend()
-    table = [i for i in t.values()]
-    context = {'table': table}
-    return render(request, 'stats/follow.html', context)
+class LeagueView(TemplateView):
+    template_name = "stats/league.html"
+
+    def get_context_data(self, **kwargs):
+        context = {'table': self.get_championship_table()}
+        return context
+
+    def get_championship_table(self):
+        return self.set_championship_table
+
+    @property
+    def set_championship_table(self):
+        table = helpers.get_championship(SEASON_TEAMS, SEASON_MATCHES)
+        return [i for i in helpers.get_championship_table(table).values()]
 
 
-def all_matches(request):
-    table = wrapper.all_matches()
-    context = {'table': table}
-    return render(request, 'stats/allmatches.html', context)
+class SearchView(View):
+    template_name = "stats/templates/stats/search.html"
+
+    @staticmethod
+    def get(request):
+        return HttpResponse(render(request, template_name='stats/search.html'))
+
+    def post(self, request):
+        team = self.request.POST.get('team_name')
+        table = helpers.search(SEASON_TEAMS, team)
+        context = {'table': table}
+        return HttpResponse(render(request, template_name='stats/search.html', context=context))
 
 
-def search(request):
-    if request.method == 'POST':
-        try:
-            team = request.POST.get('team_name')
-            table = wrapper.search_team(team)
-            context = {'table': table}
-            return render(request, 'stats/search.html', context)
-        except:
-            pass
-    else:
-        return render(
-            request,
-            'stats/search.html',
-        )
+class NextWeekendView(TemplateView):
+    template_name = "stats/next_weekend.html"
+
+    def get_context_data(self, **kwargs):
+        t = helpers.next_weekend(SEASON_TEAMS, SEASON_MATCHES)
+        table = [i for i in t.values()]
+        context = {'table': table}
+        return context
 
 
-def team_stats(request):
-    if request.method == 'POST':
-        try:
-            team = request.POST.get('name')
-            table_team = wrapper.get_team_stats(team)
-            tid = request.POST.get('tid')
-            table = wrapper.get_team_matches(int(tid))
-            table_id = [i for i in table.values()]
-            return render(request, 'stats/info.html', {
-                'table_team': table_team,
-                'table_id': table_id
-            })
-        except:
-            pass
-    else:
-        return render(
-            request,
-            'stats/info.html',
-        )
+class ListAllView(TemplateView):
+    template_name = "stats/list_all.html"
+
+    def get_context_data(self, **kwargs):
+        context = {'table': self.get_list_all()}
+        return context
+
+    def get_list_all(self):
+        return self.set_list_all
+
+    @property
+    def set_list_all(self):
+        table = helpers.all(SEASON_MATCHES)
+        return [i for i in table]
+
+
+class TeamStatsView(LeagueView, ListAllView, View):
+    template_name = "stats/team_stats.html"
+
+    def __init__(self):
+        super(TeamStatsView, self).__init__()
+
+    def get(self, request):
+        return HttpResponse(render(request, template_name="stats/team_stats.html", context=None))
+
+    def post(self, request):
+        team = self.request.POST.get('name')
+        championship = self.get_championship_table()
+        tid = self.request.POST.get('tid')
+        team_matches = self.get_list_all()
+        table = helpers.get_team_matches(team_matches, tid)
+        context = {'table_team': helpers.get_team_stats(championship, team),
+                   'table_id': [i for i in table.values()]}
+        return HttpResponse(render(request, template_name="stats/team_stats.html", context=context))
