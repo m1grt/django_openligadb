@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django_filters
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
@@ -28,18 +30,14 @@ class LeagueView(TemplateView):
         return [i for i in helpers.get_championship_table(table).values()]
 
 
-class SearchView(View):
-    template_name = "stats/templates/stats/search.html"
+class SearchView(TemplateView):
+    template_name = "stats/search.html"
 
-    @staticmethod
-    def get(request):
-        return HttpResponse(render(request, template_name='stats/search.html'))
-
-    def post(self, request):
-        team = self.request.POST.get('team_name')
+    def get(self, request):
+        team = self.request.GET.get('team_name')
         table = helpers.search(SEASON_TEAMS, team)
         context = {'table': table}
-        return HttpResponse(render(request, template_name='stats/search.html', context=context))
+        return HttpResponse(render(request, template_name="stats/search.html", context=context))
 
 
 class NextWeekendView(TemplateView):
@@ -75,12 +73,9 @@ class TeamStatsView(LeagueView, ListAllView, View):
         super(TeamStatsView, self).__init__()
 
     def get(self, request):
-        return HttpResponse(render(request, template_name="stats/team_stats.html", context=None))
-
-    def post(self, request):
-        team = self.request.POST.get('name')
+        team = self.request.GET.get('name')
         championship = self.get_championship_table()
-        tid = self.request.POST.get('tid')
+        tid = self.request.GET.get('tid')
         team_matches = self.get_list_all()
         table = helpers.get_team_matches(team_matches, tid)
         context = {'table_team': helpers.get_team_stats(championship, team),

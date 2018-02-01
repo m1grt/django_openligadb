@@ -132,8 +132,8 @@ def search_team(f):
             try:
                 s = re.search(u'{}'.format(args[1].lower()), u'{}'.format(i['TeamName'].lower()))
                 results.append({'name': s.string, 'id': i['TeamId']})
-            except Exception as e:
-                return e.message
+            except:
+                pass
         return results
 
     return wrapped
