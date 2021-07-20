@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 
-from views import IndexView, LeagueView, ListAllView, SearchView, NextWeekendView, TeamStatsView
+from .views import IndexView, LeagueView, ListAllView, SearchView, NextWeekendView, TeamStatsView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),

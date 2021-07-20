@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import decorators
+from . import decorators
 
 
 @decorators.all_matches

@@ -84,7 +84,7 @@ def set_championship_table(f):
         club = args[0][0]
         results = {}
         rank = 1
-        for i in xrange(len(club)):
+        for i in range(len(club)):
             count_matches = club[i]['wins'] + club[i]['losses'] + club[i]['draws']
             goals = str(club[i]['goals']) + ':' + str(club[i]['received_goals'])
             gd = int(club[i]['goals']) - int(club[i]['received_goals'])

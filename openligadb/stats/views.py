@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
 
-from results import SEASON_MATCHES, SEASON_TEAMS, helpers
+from .results import SEASON_MATCHES, SEASON_TEAMS, helpers
 
 
 class IndexView(TemplateView):
