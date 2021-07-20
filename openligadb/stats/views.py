@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import django_filters
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
-
 from .results import SEASON_MATCHES, SEASON_TEAMS, helpers
 
 
