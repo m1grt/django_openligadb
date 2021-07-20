@@ -33,7 +33,9 @@ class SearchView(TemplateView):
         team = self.request.GET.get('team_name')
         table = helpers.search(SEASON_TEAMS, team)
         context = {'table': table}
-        return HttpResponse(render(request, template_name="stats/search.html", context=context))
+        return HttpResponse(
+            render(request, template_name="stats/search.html", context=context)
+        )
 
 
 class NextWeekendView(TemplateView):
@@ -74,6 +76,12 @@ class TeamStatsView(LeagueView, ListAllView, View):
         tid = self.request.GET.get('tid')
         team_matches = self.get_list_all()
         table = helpers.get_team_matches(team_matches, tid)
-        context = {'table_team': helpers.get_team_stats(championship, team),
-                   'table_id': [i for i in table.values()]}
-        return HttpResponse(render(request, template_name="stats/team_stats.html", context=context))
+        context = {
+            'table_team': helpers.get_team_stats(championship, team),
+            'table_id': [i for i in table.values()],
+        }
+        return HttpResponse(
+            render(
+                request, template_name="stats/team_stats.html", context=context
+            )
+        )
