@@ -1,5 +1,5 @@
 __all__ = ['openliga', 'decorators', 'helpers']
-from openliga import LigaApi as Api
+from .openliga import LigaApi as Api
 
 api = Api()
 

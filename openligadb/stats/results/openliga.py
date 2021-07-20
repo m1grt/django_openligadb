@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import urllib2
+import urllib.request
 import json
 
 
@@ -16,12 +16,12 @@ class LigaApi(object):
         """
         return all teams participating in current league season
         """
-        data = json.load(urllib2.urlopen(self.URL + '/getavailableteams/bl1/2017'))
+        data = json.load(urllib.request.urlopen(self.URL + '/getavailableteams/bl1/2017'))
         return [r for r in data]
 
     def get_match_data_by_league_season(self):
         """
         return all matche/games for current league season
         """
-        data = json.load(urllib2.urlopen(self.URL + '/getmatchdata/bl1/2017'))
+        data = json.load(urllib.request.urlopen(self.URL + '/getmatchdata/bl1/2017'))
         return [md for md in data]
